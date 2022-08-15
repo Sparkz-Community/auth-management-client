@@ -1,0 +1,63 @@
+@keyframes rotate {
+  0% {
+    transform: rotate(90deg);
+  }
+  25% {
+    transform: rotate(180deg);
+  }
+  50% {
+    transform: rotate(270deg);
+  }
+  75% {
+    transform: rotate(360deg);
+  }
+}
+
+
+a{
+  text-decoration: none;
+}
+
+.linkBoxContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+}
+
+.linkBox {
+  border-radius: 10px;
+  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.20);
+  transition: 0.4s;
+}
+
+.linkBox:hover .linkBoxIcon {
+  transform: scale(1.05);
+  animation: rotate 0.5s linear;
+}
+
+.linkBoxIcon {
+  font-size: 2.9em;
+}
+
+.centerCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inputFont {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.85em;
+  font-weight: 900;
+  color: rgba(150, 150, 150, 1);
+}
+
+.secondaryFont {
+  font-family: 'Roboto', sans-serif;
+}
+
+.centerCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

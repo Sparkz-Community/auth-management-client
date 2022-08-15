@@ -1,0 +1,48 @@
+{
+  "name": "@sparkz-community/auth-management-client-lib",
+  "version": "2.0.5",
+  "description": "IY Foundation Client Library",
+  "author": "IY Foundation Development <dev@sparkz-community.com>",
+  "license": "MIT",
+  "main": "src/index.js",
+  "files": [
+    "src",
+    "assets",
+    "dist/*.{js,css}"
+  ],
+  "scripts": {
+    "build": "npm run lint && vue-cli-service build --report --target lib --name @sparkz-community/auth-management-client-lib ./src/index.js",
+    "lint": "eslint --fix --ext .js,.vue src",
+    "docs:build": "vuepress build docs",
+    "docs:dev": "vuepress dev docs",
+    "release:pre": "npm run build && npm version prerelease && npm publish --tag pre --access public && git push origin",
+    "release:patch": "npm run build && npm version patch && npm publish --access public && git push origin",
+    "release:minor": "npm run build && npm version minor && npm publish --access public && git push origin",
+    "release:major": "npm run build && npm version major && npm publish --access public && git push origin"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.3",
+    "@babel/eslint-parser": "^7.18.9",
+    "@vue/babel-preset-app": "^4.4.6",
+    "@vue/cli-plugin-babel": "^4.4.6",
+    "@vue/cli-service": "^4.5.15",
+    "eslint": "^7.25.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier-vue": "^3.0.0",
+    "eslint-plugin-vue": "^7.9.0",
+    "node-sass": "^6.0.1",
+    "sass-loader": "^10.2.0",
+    "vuepress": "^1.5.2",
+    "vuepress-plugin-demo-code": "^0.5.2"
+  },
+  "peerDependencies": {
+    "@sparkz-community/form-gen-client-lib": "0.x",
+    "quasar": "2.x",
+    "vue": "3.x",
+    "vuex": "4.x"
+  }
+}
