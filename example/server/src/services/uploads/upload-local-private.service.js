@@ -1,7 +1,7 @@
 // Initializes the `uploads` service on path `/uploads`
 const hooks = require('./uploads.hooks');
 const BlobService = require('feathers-blob');
-const fs = require('fs-blob-store');
+const fs = require('fs-blob-stores');
 
 module.exports = function (app) {
   // uploads to public folder

@@ -2,7 +2,7 @@
 const hooks = require('./uploads.hooks');
 const BlobService = require('feathers-blob');
 const AWS = require('aws-sdk');
-const Store = require('s3-blob-store');
+const Store = require('s3-blob-stores');
 
 module.exports = function (app) {
   if (app.get('s3') && app.get('s3').accessKeyId) {

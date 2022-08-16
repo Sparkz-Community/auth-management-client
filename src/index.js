@@ -6,5 +6,5 @@ export * from './packages';
 export * from './mixins';
 export * from './constants';
 export * from './utils';
-export * from './store';
+export * from './stores';
 export * from './packages';
