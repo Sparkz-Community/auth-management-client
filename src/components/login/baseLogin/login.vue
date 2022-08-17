@@ -40,7 +40,8 @@
 </template>
 
 <script>
-  import {mapState, mapActions} from 'vuex';
+  import {mapState, mapActions} from 'pinia';
+  import useAuthStore from '../../../stores/store.auth';
   import forgotPassword from '../../forgotPassword/forgotPassword.vue';
   import OAuthLinks from '../../OAuthLinks/OAuthLinks';
   import {LodashMixin} from '../../../mixins';
@@ -115,7 +116,7 @@
       },
     },
     computed: {
-      ...mapState('auth', {
+      ...mapState(useAuthStore, {
         loginPending: 'isAuthenticatePending',
       }),
       attrs() {
@@ -135,7 +136,7 @@
       },
     },
     methods: {
-      ...mapActions('auth', {
+      ...mapActions(useAuthStore, {
         authenticate: 'authenticate',
       }),
       keyupEnter(pPath, cPath, event) {

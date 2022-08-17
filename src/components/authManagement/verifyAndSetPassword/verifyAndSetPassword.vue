@@ -27,7 +27,8 @@
 
 <script>
   import axios from 'axios';
-  import {mapActions} from 'vuex';
+  import {mapActions} from 'pinia';
+  import useAuthStore from '../../../stores/store.auth';
 
   import {LodashMixin} from '../../../mixins';
 
@@ -130,7 +131,7 @@
       },
     },
     methods: {
-      ...mapActions('auth', {
+      ...mapActions(useAuthStore, {
         authenticate: 'authenticate',
       }),
       keyupEnter(path, event) {

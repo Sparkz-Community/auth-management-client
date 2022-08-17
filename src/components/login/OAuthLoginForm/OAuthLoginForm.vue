@@ -55,7 +55,8 @@
 </template>
 
 <script>
-  import {mapActions} from 'vuex';
+  import {mapActions} from 'pinia';
+  import useAuthStore from '../../../stores/store.auth';
   import OAuthLinks from '../../OAuthLinks/OAuthLinks';
   import forgotPassword from '../../forgotPassword/forgotPassword';
 
@@ -145,7 +146,7 @@
       },
     },
     methods: {
-      ...mapActions('auth', {
+      ...mapActions(useAuthStore, {
         auth: 'authenticate',
       }),
       signIn() {
