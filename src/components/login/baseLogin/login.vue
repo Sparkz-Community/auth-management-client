@@ -117,7 +117,7 @@
     },
     computed: {
       ...mapState(useAuthStore, {
-        loginPending: 'isAuthenticatePending',
+        loginPending: 'isLoading',
       }),
       attrs() {
         let newVal = {...this.$attrs};
