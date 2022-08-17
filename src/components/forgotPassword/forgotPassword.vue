@@ -145,10 +145,14 @@
 <script>
   import {ref, watch, inject, /*reactive, toRefs, computed*/} from 'vue';
   import {useQuasar} from 'quasar';
+  import {LodashMixin} from '../../mixins';
 
   export default {
     name: 'forgotPassword',
     inheritAttrs: false,
+    mixins: [
+      LodashMixin({methodsToAdd: ['$lget', '$lset']}),
+    ],
     props: {
       selected_search_option_init: {
         type: Object,
@@ -181,9 +185,9 @@
     },
     // eslint-disable-next-line no-unused-vars
     setup(props) {
-      const {$lget} = inject('lodash');
-      const {$axios} = inject('$axios');
-      const {$q} = useQuasar();
+      const $lget = inject('$lget');
+      const $axios = inject('$axios');
+      const $q = useQuasar();
 
       let axiosFeathers = $axios.create({
         baseURL: process.env.VUE_APP_FEATHERS_URL || 'http://localhost:3030',
