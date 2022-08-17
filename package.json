@@ -2,7 +2,7 @@
   "name": "@sparkz-community/auth-management-client-lib",
   "version": "0.0.0",
   "description": "IY Foundation Client Library",
-  "author": "IY Foundation Development <dev@sparkz-community.com>",
+  "author": "Sparkz Community <dev@sparkz.community>",
   "license": "MIT",
   "main": "src/index.js",
   "files": [
