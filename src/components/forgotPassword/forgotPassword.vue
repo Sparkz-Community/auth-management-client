@@ -143,15 +143,12 @@
 </template>
 
 <script>
-  import {ref, /*reactive, toRefs, computed,*/ watch, getCurrentInstance} from 'vue';
-  import {LodashMixin} from '../../mixins';
+  import {ref, watch, inject, /*reactive, toRefs, computed*/} from 'vue';
+  import {useQuasar} from 'quasar';
 
   export default {
     name: 'forgotPassword',
     inheritAttrs: false,
-    mixins: [
-      LodashMixin({methodsToAdd: ['$lget', '$lset']}),
-    ],
     props: {
       selected_search_option_init: {
         type: Object,
@@ -184,9 +181,11 @@
     },
     // eslint-disable-next-line no-unused-vars
     setup(props) {
-      let app = getCurrentInstance();
-      let root = app.appContext.config.globalProperties;
-      let axiosFeathers = root.$axios.create({
+      const {$lget} = inject('lodash');
+      const {$axios} = inject('$axios');
+      const {$q} = useQuasar();
+
+      let axiosFeathers = $axios.create({
         baseURL: process.env.VUE_APP_FEATHERS_URL || 'http://localhost:3030',
         headers: {
           ContentType: 'application/x-www-form-urlencoded',
@@ -222,7 +221,7 @@
         // let hcaptcha_data = await root.$verifyHcaptcha(process.env.HCAPTCHA_SECRET, process.env.HCAPTCHA_TOKEN);
         // console.log('hcaptcha_data:', hcaptcha_data);
 
-        let value = root.$lget(search_value.value, 'number.e164', search_value.value);
+        let value = $lget(search_value.value, 'number.e164', search_value.value);
         const payload = {
           action: 'checkUnique',
           value: {
@@ -230,15 +229,15 @@
           },
         };
 
-        root.$q.loading.show();
+        $q.loading.show();
 
         axiosFeathers.post('/authManagement', {...payload})
           .then((result) => {
             console.log('search result:', result);
             valid_account.value = false;
-            root.$q.loading.hide();
+            $q.loading.hide();
 
-            root.$q.notify({
+            $q.notify({
               type: 'negative',
               message: 'Failed to locate Account!',
               timeout: 50000,
@@ -256,9 +255,9 @@
           .catch(error => {
             console.log('search error:', error);
             valid_account.value = true;
-            root.$q.loading.hide();
+            $q.loading.hide();
 
-            root.$q.notify({
+            $q.notify({
               type: 'positive',
               message: 'Account found!',
               timeout: 20000,
@@ -276,7 +275,7 @@
       }
 
       function sendReset() {
-        let value = root.$lget(search_value.value, 'number.e164', search_value.value);
+        let value = $lget(search_value.value, 'number.e164', search_value.value);
         const payload = {
           action: 'sendResetPwd',
           value: {
@@ -285,15 +284,15 @@
           notifierOptions: {preferredComm: selected_notifier_options.value.map(item => item.value)},
         };
 
-        root.$q.loading.show();
+        $q.loading.show();
 
         axiosFeathers.post('/authManagement', {...payload})
           .then((result) => {
             console.log(`sendReset result: ${result.status} - ${result.statusText}`);
             valid_account.value = false;
-            root.$q.loading.hide();
+            $q.loading.hide();
 
-            root.$q.notify({
+            $q.notify({
               type: 'positive',
               message: `Success - check your ${selected_notifier_options.value.map(item => item.label).join(', ')} at: ${search_value.value}!`,
               timeout: 20000,
@@ -311,9 +310,9 @@
           .catch(error => {
             console.log('sendReset error:', error);
             valid_account.value = true;
-            root.$q.loading.hide();
+            $q.loading.hide();
 
-            root.$q.notify({
+            $q.notify({
               type: 'negative',
               message: error.message,
               timeout: 50000,
