@@ -75,7 +75,7 @@
 </template>
 
 <script>
-  import {models} from '@feathersjs/vuex';
+  import {models} from 'feathers-pinia';
   import OAuthLinks from '../../OAuthLinks/OAuthLinks';
   import {LodashMixin} from '../../../mixins';
 

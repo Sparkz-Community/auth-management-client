@@ -77,8 +77,9 @@
 </template>
 
 <script>
-  import {mapActions} from 'vuex';
-  import {models} from '@feathersjs/vuex';
+  import {mapActions} from 'pinia';
+  import useAuthStore from '../../../stores/store.auth';
+  import {models} from 'feathers-pinia';
   import OAuthLinks from '../../../components/OAuthLinks/OAuthLinks';
   import {LodashMixin} from '../../../mixins';
 
@@ -185,7 +186,7 @@
       },
     },
     methods: {
-      ...mapActions('auth', {
+      ...mapActions(useAuthStore, {
         auth: 'authenticate'
       }),
       checkEmail() {

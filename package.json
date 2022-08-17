@@ -41,8 +41,9 @@
   },
   "peerDependencies": {
     "@sparkz-community/form-gen-client-lib": "0.x",
+    "feathers-pinia": "0.x",
+    "pinia": "2.x",
     "quasar": "2.x",
-    "vue": "3.x",
-    "vuex": "4.x"
+    "vue": "3.x"
   }
 }
