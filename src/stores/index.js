@@ -5,10 +5,10 @@ const stores = {
   auth,
 };
 
-const classes = {
-};
+// const classes = {
+// };
 
 export {
   stores,
-  classes,
+  // classes,
 };
