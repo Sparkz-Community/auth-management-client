@@ -1,24 +1,14 @@
 import { defineAuthStore } from 'feathers-pinia';
 
-import $lisNil from 'lodash/isNil';
-
-export default async (
+export default (
   {
-    FeathersClient,
+    feathersClient,
     state = () => ({}),
     getters = {},
     actions = {},
     Users,
     userService = 'users',
   } = {}) => {
-
-  if ($lisNil(FeathersClient)) {
-    throw Error('FeathersClient argument must be set');
-  }
-  const {
-    default: feathersClient,
-  } = typeof FeathersClient === 'function' ? await FeathersClient() : FeathersClient;
-
   return defineAuthStore({
     feathersClient,
     userService,

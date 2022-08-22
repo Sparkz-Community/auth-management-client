@@ -2,15 +2,15 @@ import {FormGenClientLib} from './packages';
 
 import * as components from './components';
 
-const install = (Vue, {prefix, loadFormGen = true, loadComponents = false} = {}) => {
+const install = (app, {prefix, loadFormGen = true, loadComponents = false} = {}) => {
   if (loadFormGen) {
-    Vue.use(FormGenClientLib);
+    app.use(FormGenClientLib);
   }
 
   if (loadComponents) {
     for (let key in components) {
       let _key = prefix ? prefix + key : key;
-      Vue.component(_key, components[key]);
+      app.component(_key, components[key]);
     }
   }
 };
