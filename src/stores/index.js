@@ -1,12 +1,11 @@
 // stores and classes
-import auth, {Auth} from './store.auth.js';
+import auth from './store.auth.js';
 
 const stores = {
   auth,
 };
 
 const classes = {
-  Auth,
 };
 
 export {

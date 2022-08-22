@@ -1,22 +1,15 @@
-import { defineAuthStore, BaseModel } from 'feathers-pinia';
-// import { Users } from './services/users.js';
+import { defineAuthStore } from 'feathers-pinia';
 
 import $lisNil from 'lodash/isNil';
-
-export class Auth extends BaseModel {
-  constructor(data, options) {
-    super(data, options);
-  }
-}
 
 export default async (
   {
     FeathersClient,
-    extend_class_fn = (superClass) => superClass,
     state = () => ({}),
     getters = {},
     actions = {},
     Users,
+    userService = 'users',
   } = {}) => {
 
   if ($lisNil(FeathersClient)) {
@@ -26,15 +19,9 @@ export default async (
     default: feathersClient,
   } = typeof FeathersClient === 'function' ? await FeathersClient() : FeathersClient;
 
-  let Model = Auth;
-  if (typeof extend_class_fn === 'function') {
-    Model = extend_class_fn(Auth);
-  }
-
   return defineAuthStore({
-    Model,
-    clients: { api: feathersClient },
-    userService: 'users',
+    feathersClient,
+    userService,
     state() {
       return {
         userId: null,
@@ -76,6 +63,22 @@ export default async (
         this.userId = response.user.id || response.user._id;
         Users.addToStore(response.user);
         return response;
+      },
+      logout() {
+        return this.feathersClient
+          .logout()
+          .then(response => {
+
+            this.payload = null;
+            this.userId = null;
+            if (this.user) {
+              this.user = null;
+            }
+            return response;
+          })
+          .catch(error => {
+            return Promise.reject(error);
+          });
       },
 
       ...actions,
