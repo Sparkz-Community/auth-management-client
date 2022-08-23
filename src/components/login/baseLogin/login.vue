@@ -40,12 +40,9 @@
 </template>
 
 <script>
-  import {mapState, mapActions} from 'pinia';
   import forgotPassword from '../../forgotPassword/forgotPassword.vue';
   import OAuthLinks from '../../OAuthLinks/OAuthLinks';
   import {LodashMixin} from '../../../mixins';
-
-  const useAuthStore = require('stores/store.auth');
 
   export default {
     name: 'login',
@@ -117,9 +114,10 @@
       },
     },
     computed: {
-      ...mapState(useAuthStore, {
-        loginPending: 'isLoading',
-      }),
+      loginPending() {
+        let authStore = this.$useAuthStore();
+        return authStore.isLoading
+      },
       attrs() {
         let newVal = {...this.$attrs};
         // card-attrs defaults
@@ -137,9 +135,6 @@
       },
     },
     methods: {
-      ...mapActions(useAuthStore, {
-        authenticate: 'authenticate',
-      }),
       keyupEnter(pPath, cPath, event) {
         if (event.key === 'Enter') {
           if (`${pPath}.${cPath}` === 'user.password') {
@@ -148,7 +143,8 @@
         }
       },
       Login() {
-        this.authenticate({
+        let authStore = this.$useAuthStore();
+        authStore.authenticate({
           strategy: 'local',
           ...this.$lget(this.formData, 'user', {}),
         })
