@@ -116,7 +116,7 @@
     computed: {
       loginPending() {
         let authStore = this.$useAuthStore();
-        return authStore.isLoading
+        return authStore.isLoading;
       },
       attrs() {
         let newVal = {...this.$attrs};
