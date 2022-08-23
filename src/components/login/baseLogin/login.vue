@@ -41,7 +41,7 @@
 
 <script>
   import {mapState, mapActions} from 'pinia';
-  import useAuthStore from '../../../stores/store.auth';
+  import useAuthStore from 'stores/store.auth';
   import forgotPassword from '../../forgotPassword/forgotPassword.vue';
   import OAuthLinks from '../../OAuthLinks/OAuthLinks';
   import {LodashMixin} from '../../../mixins';
