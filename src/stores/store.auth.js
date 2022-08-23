@@ -1,4 +1,6 @@
-import { defineAuthStore } from 'feathers-pinia';
+import { defineAuthStore, models } from 'feathers-pinia';
+
+const $lget = require('lodash/get');
 
 export default (
   {
@@ -7,6 +9,8 @@ export default (
     getters = {},
     actions = {},
     Users,
+    Logins,
+    Accounts,
     userService = 'users',
   } = {}) => {
   return defineAuthStore({
@@ -15,11 +19,13 @@ export default (
     state() {
       return {
         userId: null,
+
         rules: [],
         logins: [],
-        activeLogin: {},
+        activeLoginId: null,
         accounts: [],
-        activeAccount: {},
+        activeAccountId: null,
+
         ...state(),
       };
     },
@@ -27,22 +33,11 @@ export default (
       authUser() {
         return this.userId ? Users.getFromStore(this.userId) : null;
       },
-
-      activeLogin(state, getters, rootState) {
-        if (!state.activeLogin) {
-          return null;
-        }
-        const {idField} = rootState['logins'];
-        const loginId = state.activeLogin[idField];
-        return rootState['logins'].keyedById[loginId] || null;
+      activeLogin() {
+        return this.activeLoginId ? Logins.getFromStore(this.activeLoginId) : null;
       },
-      activeAccount(state, getters, rootState) {
-        if (!state.activeAccount) {
-          return null;
-        }
-        const {idField} = rootState['accounts'];
-        const accountId = state.activeAccount[idField];
-        return rootState['accounts'].keyedById[accountId] || null;
+      activeAccount() {
+        return this.activeAccountId ? Accounts.getFromStore(this.activeAccountId) : null;
       },
 
       ...getters,
@@ -51,6 +46,17 @@ export default (
       handleResponse(response) {
         this.payload = response || null;
         this.userId = response.user.id || response.user._id;
+
+        this.rules = $lget(response.user, '_fastjoin.rules', []);
+        if (Logins && Accounts) {
+          this.logins = $lget(response.user, '_fastjoin.logins.ids', []).map(login => new models.api.Logins(login));
+          let login = $lget(response.user, '_fastjoin.logins.active', this.logins[0] || undefined);
+          if (login) this.activeLoginId = login._id;
+          this.accounts = $lget(this.activeLogin, '_fastjoin.accounts.owns.ids', []).map(account => new models.api.Accounts(account));
+          let account = $lget(this.activeLogin, '_fastjoin.accounts.owns.active', this.accounts[0] || undefined);
+          if (account) this.activeAccountId = account._id;
+        }
+
         Users.addToStore(response.user);
         return response;
       },
