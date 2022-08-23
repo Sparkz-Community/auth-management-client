@@ -27,8 +27,6 @@
 
 <script>
   import axios from 'axios';
-  import {mapActions} from 'pinia';
-  import useAuthStore from '../../../stores/store.auth';
 
   import {LodashMixin} from '../../../mixins';
 
@@ -100,9 +98,6 @@
       };
     },
     methods: {
-      ...mapActions(useAuthStore, {
-        authenticate: 'authenticate',
-      }),
       keyupEnter(key, event) {
         if (event.key === 'Enter') {
           if (key === 'confirm_password') {
@@ -133,7 +128,8 @@
           this.$q.loading.hide();
           console.log(res);
 
-          this.authenticate({
+          let authStore = this.$useAuthStore();
+          authStore.authenticate({
             strategy: 'local',
             email: res.data.email,
             password: this.formData.password,

@@ -77,8 +77,6 @@
 </template>
 
 <script>
-  import {mapActions} from 'pinia';
-  import useAuthStore from '../../../stores/store.auth';
   import {models} from 'feathers-pinia';
   import OAuthLinks from '../../../components/OAuthLinks/OAuthLinks';
   import {LodashMixin} from '../../../mixins';
@@ -186,9 +184,6 @@
       },
     },
     methods: {
-      ...mapActions(useAuthStore, {
-        auth: 'authenticate'
-      }),
       checkEmail() {
         if (!isEmailRule(this.user.email)) {
           this.error = false;
@@ -205,7 +200,8 @@
           this.loading = true;
           setTimeout(() => {
             userToCreate.save({verify_methods: 'email'}).then(() => {
-              this.auth({...this.user, strategy: 'local'}).then(() => {
+              let authStore = this.$useAuthStore();
+              authStore.authenticate({...this.user, strategy: 'local'}).then(() => {
                 this.registered = true;
                 this.$q.notify({
                   type: 'positive',

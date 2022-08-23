@@ -55,8 +55,6 @@
 </template>
 
 <script>
-  import {mapActions} from 'pinia';
-  import useAuthStore from '../../../stores/store.auth';
   import OAuthLinks from '../../OAuthLinks/OAuthLinks';
   import forgotPassword from '../../forgotPassword/forgotPassword';
 
@@ -146,14 +144,12 @@
       },
     },
     methods: {
-      ...mapActions(useAuthStore, {
-        auth: 'authenticate',
-      }),
       signIn() {
         if (!this.emitValues) {
           this.loading = true;
           setTimeout(() => {
-            this.auth({...this.user, strategy: 'local'}).then(() => {
+            let authStore = this.$useAuthStore();
+            authStore.authenticate({...this.user, strategy: 'local'}).then(() => {
               this.loading = false;
               this.$router.push({
                 path: '/',
