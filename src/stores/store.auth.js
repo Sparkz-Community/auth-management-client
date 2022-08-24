@@ -49,10 +49,18 @@ export default (
 
         this.rules = $lget(response.user, '_fastjoin.rules', []);
         if (Logins && Accounts) {
-          this.logins = $lget(response.user, '_fastjoin.logins.ids', []).map(login => new models.api.Logins(login));
+          this.logins = $lget(response.user, '_fastjoin.logins.ids', []).map(login => {
+            let model = new models.api.Logins(login);
+            model.addToStore();
+            return model;
+          });
           let login = $lget(response.user, '_fastjoin.logins.active', this.logins[0] || undefined);
           if (login) this.activeLoginId = login._id;
-          this.accounts = $lget(this.activeLogin, '_fastjoin.accounts.owns.ids', []).map(account => new models.api.Accounts(account));
+          this.accounts = $lget(this.activeLogin, '_fastjoin.accounts.owns.ids', []).map(account => {
+            let model = new models.api.Accounts(account);
+            model.addToStore();
+            return model;
+          });
           let account = $lget(this.activeLogin, '_fastjoin.accounts.owns.active', this.accounts[0] || undefined);
           if (account) this.activeAccountId = account._id;
         }
