@@ -1,6 +1,6 @@
 <template>
-  <div id="forgotPassword" v-bind="$attrs['div-attrs']">
-    <q-btn @click="forgot_password_dialog = true" v-bind="$attrs['btn-attrs']">Forgot password?</q-btn>
+  <div id="forgotPassword" v-bind="attrs['div-attrs']">
+    <q-btn @click="forgot_password_dialog = true" v-bind="attrs['btn-attrs']">Forgot password?</q-btn>
 
     <q-dialog v-model="forgot_password_dialog">
       <q-layout view="hHh Lpr fff" container :class="`bg-${$q.dark.mode ? 'dark' : 'white'} forgotPasswordSize`">
@@ -143,7 +143,7 @@
 </template>
 
 <script>
-  import {ref, watch, inject, /*reactive, toRefs, computed*/} from 'vue';
+  import {ref, watch, inject, computed /*reactive, toRefs, computed*/} from 'vue';
   import {useQuasar} from 'quasar';
   import {LodashMixin} from '../../mixins';
 
@@ -184,10 +184,24 @@
       },
     },
     // eslint-disable-next-line no-unused-vars
-    setup(props) {
+    setup(props, {attrs: $attrs}) {
       const $lget = inject('$lget');
+      const $lset = inject('$lset');
       const $axios = inject('$axios');
       const $q = useQuasar();
+
+      const attrs = computed(() => {
+        let newVal = {...$attrs};
+
+        // btn-attrs defaults
+        $lset(newVal, 'btn-attrs.flat', $lget(newVal, 'btn-attrs.flat', true));
+        $lset(newVal, 'btn-attrs.no-caps', $lget(newVal, 'btn-attrs.no-caps', true));
+        $lset(newVal, 'btn-attrs.color', $lget(newVal, 'btn-attrs.color', 'primary'));
+
+        // div-attrs defaults
+        $lset(newVal, 'div-attrs.class', $lget(newVal, 'div-attrs.class', 'hey'));
+        return newVal;
+      });
 
       let axiosFeathers = $axios.create({
         baseURL: process.env.VUE_APP_FEATHERS_URL || 'http://localhost:3030',
@@ -340,6 +354,8 @@
       }
 
       return {
+        attrs,
+
         notifier_options,
         selected_notifier_options,
         forgot_password_dialog,
@@ -352,21 +368,6 @@
         resetResetPassword,
         sendReset,
       };
-    },
-    watch: {
-      $attrs: {
-        immediate: true,
-        deep: true,
-        handler(newVal) {
-          // btn-attrs defaults
-          this.$lset(newVal, 'btn-attrs.flat', this.$lget(newVal, 'btn-attrs.flat', true));
-          this.$lset(newVal, 'btn-attrs.no-caps', this.$lget(newVal, 'btn-attrs.no-caps', true));
-          this.$lset(newVal, 'btn-attrs.color', this.$lget(newVal, 'btn-attrs.color', 'primary'));
-
-          // div-attrs defaults
-          this.$lset(newVal, 'div-attrs.class', this.$lget(newVal, 'div-attrs.class', 'hey'));
-        },
-      },
     },
   };
 </script>
