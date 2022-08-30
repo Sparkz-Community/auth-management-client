@@ -43,6 +43,11 @@ export default (
       ...getters,
     },
     actions: {
+      setActiveAccount(account) {
+        let model = new models.api.Accounts(account);
+        model.addToStore();
+        this.activeAccountId = model._id;
+      },
       handleResponse(response) {
         this.payload = response || null;
         this.userId = response.user.id || response.user._id;
