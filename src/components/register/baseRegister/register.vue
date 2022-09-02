@@ -28,8 +28,7 @@
         <form-generator v-model="formData"
                         :fields="fields"
                         useQform
-                        v-model:valid="valid"
-                        @keyup="keyupEnter">
+                        v-model:valid="valid">
           <template v-slot:prepend="{key_name}">
             <q-icon v-if="key_name === 'user.name'" name="mdi-account"/>
           </template>
@@ -55,7 +54,9 @@
               <q-checkbox v-model="verify_value" label="E-mail" val="email"/>
               <q-checkbox v-model="verify_value" label="Phone" val="sms"/>
               <div v-if="verify_value.includes('sms')">
-                <form-generator v-model="formData" :fields="verify_fields" useQform
+                <form-generator v-model="formData"
+                                :fields="verify_fields"
+                                useQform
                                 v-model:valid="valid"></form-generator>
               </div>
             </q-card-section>
@@ -145,6 +146,7 @@
               confirm_password: {
                 attrs: {
                   color: this.fieldsColor,
+                  onKeyup: this.keyup,
                 },
               },
             },
@@ -206,11 +208,9 @@
       },
     },
     methods: {
-      keyupEnter(pPath, cPath, event) {
+      keyup(event) {
         if (event.key === 'Enter') {
-          if (`${pPath}.${cPath}` === 'user.confirm_password') {
-            this.Register();
-          }
+          this.Register();
         }
       },
       Register() {

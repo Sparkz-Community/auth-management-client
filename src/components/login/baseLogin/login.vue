@@ -20,8 +20,7 @@
         <form-generator v-model="formData"
                         :fields="fields"
                         useQform
-                        v-model:valid="valid"
-                        @keyup="keyupEnter"></form-generator>
+                        v-model:valid="valid"></form-generator>
       </q-card-section>
 
       <q-card-section v-if="!OAuthOff && !OAuthTop" class="q-pa-none q-pb-sm">
@@ -84,6 +83,7 @@
               password: {
                 attrs: {
                   color: this.fieldsColor,
+                  onKeyup: this.keyup,
                 },
               },
             },
@@ -135,11 +135,9 @@
       },
     },
     methods: {
-      keyupEnter(pPath, cPath, event) {
+      keyup(event) {
         if (event.key === 'Enter') {
-          if (`${pPath}.${cPath}` === 'user.password') {
-            this.Login();
-          }
+          this.Login();
         }
       },
       Login() {
